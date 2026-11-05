@@ -1,0 +1,6 @@
+item,tier,source,chainage_km,map_frames,capture_date,view_url_or_coords,confidence
+T->J0,B,JICA (2014b): Tumalaong confluence at chainage 22.3 km,22.3,trace page 4 / frames 6-7,,,
+B->J1,B,JICA (2014b): Bubunawan confluence at chainage 18.5 km,18.5,trace page 4-5,,,
+J0->J1,B/C-,Tumalaong merger (CH 22.3) precedes Bubunawan merger (CH 18.5) going downstream,,,,,
+L->R,C-,Conceptual aggregate; constituent streams and area NOT inventoried (Table 4b),,,,,
+R->O (no Lapasan edge),D,Lapasan proximity adds no drainage edge or local inundation pathway,,,,,

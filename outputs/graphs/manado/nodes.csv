@@ -1,0 +1,10 @@
+node,role,label,aggregate,provisional,is_delineated_catchment,area_km2_published
+U,source,Upper Tondano / lake contribution,False,False,False,
+T,source,Tikala,False,False,False,
+L,source,Combined lower laterals,True,False,False,
+S0,storage,Lake Tondano (release memory tau),False,False,False,
+S1,storage,Hydropower context (no operating rule),False,False,False,
+S2,storage,Kuwil-Kawangkoan dam (tau / 2),False,False,False,
+J0,junction,Tondano-Tikala junction,False,False,False,
+R,receiver,Lower Manado receiver,False,False,False,
+O,boundary,Manado Bay boundary,False,False,False,

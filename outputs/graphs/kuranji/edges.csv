@@ -1,0 +1,8 @@
+from,to,delay_bearing,fraction,from_role,to_role
+K,Z,True,1.0,source,zone
+B,Z,True,1.0,source,zone
+S,Z,True,1.0,source,zone
+J,Z,True,1.0,source,zone
+M,Z,True,1.0,source,zone
+Z,R,True,1.0,zone,receiver
+R,O,True,1.0,receiver,boundary

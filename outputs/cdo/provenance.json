@@ -1,0 +1,72 @@
+{
+  "rtmap_version": "1.0.0",
+  "run_utc": "2026-11-05T21:55:32.295013+00:00",
+  "python": "3.14.0",
+  "config_hash": "1f76c224c510",
+  "config": {
+    "dem": "glo90",
+    "sea_level_m": 0.0,
+    "stream_threshold_km2": 10,
+    "threshold_sweep_km2": [
+      5,
+      10,
+      25,
+      50
+    ],
+    "snap_radius_m": 2500,
+    "n_source_groups": 4,
+    "basin_name_suffix": "",
+    "name": "Cagayan de Oro River (Macajalar Bay)",
+    "status": "from_report",
+    "bbox": [
+      124.55,
+      7.99,
+      125.08,
+      8.56
+    ],
+    "outlet": [
+      124.6521,
+      8.4971
+    ],
+    "expected": {
+      "basin_area_km2": 1139.08,
+      "tol": 0.1
+    },
+    "source_group_anchors": {
+      "upstream_group": "U_upper_cdo",
+      "upstream_graph_node": "U",
+      "residual_group": "L_lower_laterals",
+      "residual_graph_node": "L",
+      "tolerance_km": 3.0,
+      "anchors": [
+        {
+          "name": "T_tumalaong",
+          "graph_node": "T",
+          "chainage_km": 22.3
+        },
+        {
+          "name": "B_bubunawan",
+          "graph_node": "B",
+          "chainage_km": 18.5
+        }
+      ]
+    }
+  },
+  "dem": {
+    "source": "Copernicus GLO-90 DSM (3 arc-sec)",
+    "tiles": [
+      "Copernicus_DSM_COG_30_N07_00_E124_00_DEM.tif",
+      "Copernicus_DSM_COG_30_N07_00_E125_00_DEM.tif",
+      "Copernicus_DSM_COG_30_N08_00_E124_00_DEM.tif",
+      "Copernicus_DSM_COG_30_N08_00_E125_00_DEM.tif"
+    ]
+  },
+  "dem_shape": [
+    684,
+    636
+  ],
+  "dem_resolution_deg": [
+    0.0008333333333333334,
+    0.0008333333333333334
+  ]
+}

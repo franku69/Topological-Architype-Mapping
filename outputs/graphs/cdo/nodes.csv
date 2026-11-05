@@ -1,0 +1,9 @@
+node,role,label,aggregate,provisional,is_delineated_catchment,area_km2_published
+U,source,"Upper CDO (excludes T, B, L)",True,False,False,
+T,source,Tumalaong,False,False,False,
+B,source,Bubunawan (also Bubunauan),False,False,False,
+L,source,Connected lower laterals,True,False,False,
+J0,junction,Upper CDO + Tumalaong merger,False,False,False,
+J1,junction,Bubunawan merger,False,False,False,
+R,receiver,Lower CDO numerical receiver,False,False,False,
+O,boundary,"Macajalar Bay accounting boundary (Lapasan annotated, no edge)",False,False,False,

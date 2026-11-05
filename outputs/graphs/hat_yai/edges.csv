@@ -1,0 +1,12 @@
+from,to,delay_bearing,fraction,from_role,to_role
+U,Urb,True,1.0,source,zone
+W,Urb,True,1.0,source,zone
+A,Urb,True,1.0,source,zone
+T,Urb,True,1.0,source,zone
+H,Urb,True,1.0,source,zone
+L,Urb,True,1.0,source,zone
+Urb,D0,True,0.5,zone,junction
+Urb,D1,True,0.5,zone,junction
+D0,R,True,1.0,junction,receiver
+D1,R,True,1.0,junction,receiver
+R,O,True,1.0,receiver,boundary

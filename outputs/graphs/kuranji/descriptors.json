@@ -1,0 +1,33 @@
+{
+  "n_nodes": 8,
+  "n_edges": 7,
+  "n_sources": 5,
+  "n_junctions": 1,
+  "n_terminal_boundaries": 1,
+  "n_storage_functions": 0,
+  "logical_distances": {
+    "K": 2,
+    "B": 2,
+    "S": 2,
+    "J": 2,
+    "M": 2
+  },
+  "logical_distance_mean": 2.0,
+  "logical_distance_min": 2,
+  "logical_distance_max": 2,
+  "observations": {
+    "receiver": {
+      "node": "R",
+      "sources_reaching": {
+        "K": true,
+        "B": true,
+        "S": true,
+        "J": true,
+        "M": true
+      }
+    }
+  },
+  "source_groups_are_delineated_catchments": false,
+  "table4_check_passed": true,
+  "table4_check_messages": []
+}

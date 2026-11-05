@@ -1,0 +1,14 @@
+node,role,label,aggregate,provisional,is_delineated_catchment,area_km2_published
+T,source,Ta Trach,False,False,False,729.0
+H,source,Huu Trach,False,False,False,718.0
+B,source,Bo,False,False,False,938.0
+L,source,Downstream residual (provisionally at Sinh),True,True,False,445.0
+S0,storage,Ta Trach reservoir,False,False,False,
+S1,storage,Binh Dien reservoir,False,False,False,
+S2,storage,Huong Dien reservoir,False,False,False,
+J0,junction,Tuan merger,False,False,False,
+U,probe,Hue / Kim Long urban probe,False,False,False,
+J1,junction,Sinh merger,False,False,False,
+R,receiver,Lagoon receiver,True,False,False,
+O0,boundary,Thuan An (assumed half share),True,False,False,
+O1,boundary,Tu Hien (assumed half share),True,False,False,

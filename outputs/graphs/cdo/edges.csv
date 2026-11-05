@@ -1,0 +1,8 @@
+from,to,delay_bearing,fraction,from_role,to_role
+U,J0,True,1.0,source,junction
+T,J0,True,1.0,source,junction
+B,J1,True,1.0,source,junction
+L,R,True,1.0,source,receiver
+J0,J1,True,1.0,junction,junction
+J1,R,True,1.0,junction,receiver
+R,O,True,1.0,receiver,boundary

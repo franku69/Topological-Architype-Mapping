@@ -1,0 +1,12 @@
+node,role,label,aggregate,provisional,is_delineated_catchment,area_km2_published
+U,source,Upper U-Tapao / Sadao,False,False,False,
+W,source,Khlong Wat,False,False,False,
+A,source,Khlong Wa,False,False,False,
+T,source,Khlong Tam,False,False,False,
+H,source,Khao Kho Hong,False,False,False,
+L,source,Direct urban input,False,False,False,
+Urb,zone,Hat Yai entry zone (not one physical junction),True,False,False,
+D0,junction,U-Tapao path (assumed half share),False,False,False,
+D1,junction,Ror.1 path (assumed half share),False,False,False,
+R,receiver,Songkhla receiver,True,False,False,
+O,boundary,Gulf boundary aggregate,True,False,False,

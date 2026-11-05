@@ -1,0 +1,198 @@
+{
+  "site": "cdo",
+  "name": "Cagayan de Oro River (Macajalar Bay)",
+  "status": "from_report",
+  "basin_area_km2": 1125.9486749909067,
+  "outlet_snapped_lonlat": [
+    124.65124999999999,
+    8.49625
+  ],
+  "source_group_mode": "named confluences located by official chainage (candidates; confirm against hydrography)",
+  "stream_threshold_km2": 10,
+  "terrain": {
+    "window_rectangle": {
+      "area_km2": 3668.686736305888,
+      "elev_min_m": 0.0,
+      "elev_median_m": 682.9129028320312,
+      "elev_p90_m": 1476.7798339843753,
+      "elev_max_m": 2911.841796875,
+      "slope_median_pct": 13.116380613409968,
+      "slope_p90_pct": 48.424055170989945,
+      "relief_median_m": 133.58514404296875,
+      "relief_p90_m": 378.697509765625,
+      "relief_window_cells": 11
+    },
+    "delineated_basin": {
+      "area_km2": 1125.9486749909067,
+      "elev_min_m": 0.5,
+      "elev_median_m": 671.28466796875,
+      "elev_p90_m": 1441.014794921875,
+      "elev_max_m": 2589.984619140625,
+      "slope_median_pct": 12.802256501859954,
+      "slope_p90_pct": 51.11058909253974,
+      "relief_median_m": 127.16668701171875,
+      "relief_p90_m": 401.3749511718749,
+      "relief_window_cells": 11
+    }
+  },
+  "descriptors": {
+    "n_sources": 31,
+    "n_junctions": 30,
+    "n_reaches": 61,
+    "max_strahler_order": 4,
+    "mean_bifurcation_ratio": 1.7569444444444444,
+    "stream_length_km": 382.50154545866906,
+    "drainage_density_km_per_km2": 0.33971490348950245,
+    "confluence_density_per_100km2": 2.6644198502424885,
+    "source_to_outlet_km_mean": 57.829846541917945,
+    "source_to_outlet_km_cv": 0.3491997145902381,
+    "source_to_outlet_km_min": 24.398799576748026,
+    "source_to_outlet_km_max": 96.61956837914546,
+    "mean_junction_branch_asymmetry": 0.3466031776449459,
+    "max_edge_betweenness": 1.0
+  },
+  "threshold_sweep": {
+    "5": {
+      "n_sources": 62,
+      "n_junctions": 61,
+      "max_strahler_order": 4,
+      "drainage_density_km_per_km2": 0.46280311252841155,
+      "source_to_outlet_km_cv": 0.3772803570210236
+    },
+    "10": {
+      "n_sources": 31,
+      "n_junctions": 30,
+      "max_strahler_order": 4,
+      "drainage_density_km_per_km2": 0.33971490348950245,
+      "source_to_outlet_km_cv": 0.3491997145902381
+    },
+    "25": {
+      "n_sources": 15,
+      "n_junctions": 14,
+      "max_strahler_order": 3,
+      "drainage_density_km_per_km2": 0.21972802224699928,
+      "source_to_outlet_km_cv": 0.3708500892096217
+    },
+    "50": {
+      "n_sources": 6,
+      "n_junctions": 5,
+      "max_strahler_order": 3,
+      "drainage_density_km_per_km2": 0.14846117632492575,
+      "source_to_outlet_km_cv": 0.31815918920411457
+    }
+  },
+  "source_groups": [
+    {
+      "element": "U_upper_cdo",
+      "type": "screening_catchment_support",
+      "area_km2": 657.8567045912793,
+      "point_lon": 124.60958333333333,
+      "point_lat": 8.346250000000001,
+      "confluence_lon": 124.60958333333333,
+      "confluence_lat": 8.347083333333334,
+      "longest_flow_path_km": 79.70233151577058,
+      "head_elev_m": 2514.275390625,
+      "point_elev_m": 78.43892642822269,
+      "slope_m_per_m": 0.030561671382408707,
+      "kirpich_tc_min": 443.9909493244381,
+      "dist_point_to_outlet_km": 24.453014573858233,
+      "graph_node": "U",
+      "model_role": "GIS screening support only; the paper's graph node is a conceptual aggregate"
+    },
+    {
+      "element": "T_tumalaong",
+      "type": "screening_catchment_support",
+      "area_km2": 33.91977050195599,
+      "point_lon": 124.61041666666667,
+      "point_lat": 8.346250000000001,
+      "confluence_lon": 124.60958333333333,
+      "confluence_lat": 8.347083333333334,
+      "longest_flow_path_km": 19.853801943631264,
+      "head_elev_m": 683.13720703125,
+      "point_elev_m": 78.43892642822269,
+      "slope_m_per_m": 0.030457555803159578,
+      "kirpich_tc_min": 152.45850445348697,
+      "dist_point_to_outlet_km": 24.490927387039044,
+      "graph_node": "T",
+      "model_role": "GIS screening support only; the paper's graph node is a conceptual aggregate"
+    },
+    {
+      "element": "B_bubunawan",
+      "type": "screening_catchment_support",
+      "area_km2": 26.69212470261245,
+      "point_lon": 124.61208333333333,
+      "point_lat": 8.37625,
+      "confluence_lon": 124.61208333333333,
+      "confluence_lat": 8.377083333333333,
+      "longest_flow_path_km": 14.229987324708015,
+      "head_elev_m": 705.8005981445312,
+      "point_elev_m": 46.892354150390645,
+      "slope_m_per_m": 0.0463042045617325,
+      "kirpich_tc_min": 100.40104238107509,
+      "dist_point_to_outlet_km": 19.420427422489794,
+      "graph_node": "B",
+      "model_role": "GIS screening support only; the paper's graph node is a conceptual aggregate"
+    },
+    {
+      "element": "lateral_residual",
+      "type": "screening_residual_support",
+      "area_km2": 407.480075195059,
+      "dist_point_to_outlet_km": 40.267607058760284,
+      "longest_flow_path_km": 69.83570531487774,
+      "kirpich_tc_min": NaN,
+      "graph_node": "L",
+      "model_role": "GIS screening support only; the paper's graph node is a conceptual aggregate"
+    }
+  ],
+  "confluence_anchor_report": [
+    {
+      "anchor": "T_tumalaong",
+      "graph_node": "T",
+      "official_chainage_km": 22.3,
+      "d8_chainage_km": 24.36,
+      "chainage_error_km": 2.06,
+      "tributary_area_km2": 33.9,
+      "status": "CANDIDATE - confirm the D8 tributary is the named river against JICA/Phil-LiDAR hydrography",
+      "nearest_candidates": [
+        {
+          "chainage_km": 24.36,
+          "trib_area_km2": 33.9
+        },
+        {
+          "chainage_km": 19.33,
+          "trib_area_km2": 26.7
+        },
+        {
+          "chainage_km": 17.15,
+          "trib_area_km2": 136.2
+        }
+      ]
+    },
+    {
+      "anchor": "B_bubunawan",
+      "graph_node": "B",
+      "official_chainage_km": 18.5,
+      "d8_chainage_km": 19.33,
+      "chainage_error_km": 0.83,
+      "tributary_area_km2": 26.7,
+      "status": "CANDIDATE - confirm the D8 tributary is the named river against JICA/Phil-LiDAR hydrography",
+      "nearest_candidates": [
+        {
+          "chainage_km": 19.33,
+          "trib_area_km2": 26.7
+        },
+        {
+          "chainage_km": 17.15,
+          "trib_area_km2": 136.2
+        },
+        {
+          "chainage_km": 15.5,
+          "trib_area_km2": 222.3
+        }
+      ]
+    }
+  ],
+  "dem_sensitivity": {},
+  "reference_audit": {},
+  "warnings": []
+}

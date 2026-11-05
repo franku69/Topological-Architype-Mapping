@@ -1,0 +1,7 @@
+site,nodes,edges,sources,storage,logical_distances,matches_table4,messages
+cdo,8,7,4,0,"[3, 3, 2, 1]",True,
+manado,9,8,3,2,"[2, 2, 1]",True,
+kuranji,8,7,5,0,"[2, 2, 2, 2, 2]",True,
+huong,13,12,4,3,"[4, 4, 2, 2]",True,
+kadamaian,6,5,3,0,"[2, 2, 1]",True,
+hat_yai,11,11,6,0,"[3, 3, 3, 3, 3, 3]",True,

@@ -1,0 +1,46 @@
+{
+  "n_nodes": 11,
+  "n_edges": 11,
+  "n_sources": 6,
+  "n_junctions": 3,
+  "n_terminal_boundaries": 1,
+  "n_storage_functions": 0,
+  "logical_distances": {
+    "U": 3,
+    "W": 3,
+    "A": 3,
+    "T": 3,
+    "H": 3,
+    "L": 3
+  },
+  "logical_distance_mean": 3.0,
+  "logical_distance_min": 3,
+  "logical_distance_max": 3,
+  "observations": {
+    "urban": {
+      "node": "Urb",
+      "sources_reaching": {
+        "U": true,
+        "W": true,
+        "A": true,
+        "T": true,
+        "H": true,
+        "L": true
+      }
+    },
+    "receiver": {
+      "node": "R",
+      "sources_reaching": {
+        "U": true,
+        "W": true,
+        "A": true,
+        "T": true,
+        "H": true,
+        "L": true
+      }
+    }
+  },
+  "source_groups_are_delineated_catchments": false,
+  "table4_check_passed": true,
+  "table4_check_messages": []
+}

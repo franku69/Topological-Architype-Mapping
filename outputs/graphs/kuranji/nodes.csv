@@ -1,0 +1,9 @@
+node,role,label,aggregate,provisional,is_delineated_catchment,area_km2_published
+K,source,Kuranji base,False,False,False,19.86
+B,source,Belimbing,False,False,False,62.64
+S,source,Sungkai,False,False,False,6.0
+J,source,Janiah / Karuah,False,False,False,82.26
+M,source,Limau Manih,False,False,False,31.93
+Z,zone,Unresolved middle confluence zone (internal order unresolved),True,False,False,
+R,receiver,Lower Kuranji coastal receiver,False,False,False,
+O,boundary,Indian Ocean boundary,False,False,False,

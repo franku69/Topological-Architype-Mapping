@@ -1,0 +1,208 @@
+# The six executed directed graphs (paper sections 3.3, 3.4.8, 3.5.8, 3.6.9, 3.7.8, 3.8.9, 3.9.9).
+#
+# READ THIS FIRST (GIS reviewer comment 4):
+#   * Nodes are NAMED REGIONAL COMPONENTS or DECLARED AGGREGATES. A source node is a
+#     computational injection point, NOT a delineated catchment polygon.
+#   * Edges are permitted forward transfers. "Map proximity alone is insufficient to add an edge."
+#   * Logical distances are counts of delay-bearing links, not km and not travel times.
+#   * `delay: false` marks a zero-delay control connector (no ordinary memory, no tick shift).
+#   * Everything here was transcribed from the manuscript's Table 3/4/4a/4b and Figures
+#     5, 16, 29, 43, 58, 72. Edge lists are CHECKED against Table 4 (nodes, edges, sources,
+#     logical distances) by `python scripts/run_graphs.py` and by the tests.
+#   * `evidence:` blocks hold only what the manuscript states. `null` = not recorded in the
+#     manuscript and must be filled by the author (map view URL/coordinates, capture date,
+#     digitising confidence) - nothing has been invented.
+#
+# roles: source | storage | junction | zone | probe | receiver | boundary
+# aggregate: true -> a declared aggregate / unresolved area (dashed in the figures)
+# provisional: true -> placement is provisional in the paper
+
+cdo:
+  name: Cagayan de Oro (reference corridor)
+  figure: "Figure 5"
+  table4: {nodes: 8, edges: 7, sources: 4, storage: 0, logical_distances: [3, 3, 2, 1]}
+  receiver: R
+  observations:
+    - {name: receiver, node: R, label: "CDO lower corridor"}
+  nodes:
+    U: {role: source,   label: "Upper CDO (excludes T, B, L)", aggregate: true}
+    T: {role: source,   label: "Tumalaong"}
+    B: {role: source,   label: "Bubunawan (also Bubunauan)"}
+    L: {role: source,   label: "Connected lower laterals", aggregate: true}
+    J0: {role: junction, label: "Upper CDO + Tumalaong merger"}
+    J1: {role: junction, label: "Bubunawan merger"}
+    R: {role: receiver, label: "Lower CDO numerical receiver"}
+    O: {role: boundary, label: "Macajalar Bay accounting boundary (Lapasan annotated, no edge)"}
+  edges:
+    - {from: U,  to: J0}
+    - {from: T,  to: J0}
+    - {from: J0, to: J1}
+    - {from: B,  to: J1}
+    - {from: J1, to: R}
+    - {from: L,  to: R}
+    - {from: R,  to: O}
+  evidence:
+    - {item: "T->J0", tier: B, source: "JICA (2014b): Tumalaong confluence at chainage 22.3 km", chainage_km: 22.3, map_frames: "trace page 4 / frames 6-7", capture_date: null, view_url_or_coords: null, confidence: null}
+    - {item: "B->J1", tier: B, source: "JICA (2014b): Bubunawan confluence at chainage 18.5 km", chainage_km: 18.5, map_frames: "trace page 4-5", capture_date: null, view_url_or_coords: null, confidence: null}
+    - {item: "J0->J1", tier: "B/C-", source: "Tumalaong merger (CH 22.3) precedes Bubunawan merger (CH 18.5) going downstream", chainage_km: null, map_frames: null, capture_date: null, view_url_or_coords: null, confidence: null}
+    - {item: "L->R", tier: "C-", source: "Conceptual aggregate; constituent streams and area NOT inventoried (Table 4b)", map_frames: null, capture_date: null, view_url_or_coords: null, confidence: null}
+    - {item: "R->O (no Lapasan edge)", tier: D, source: "Lapasan proximity adds no drainage edge or local inundation pathway", map_frames: null, capture_date: null, view_url_or_coords: null, confidence: null}
+  area_km2: null          # "No measured CDO source areas are assigned."
+
+manado:
+  name: Tondano-Tikala / Manado
+  figure: "Figure 16"
+  table4: {nodes: 9, edges: 8, sources: 3, storage: 2, logical_distances: [2, 2, 1]}
+  receiver: R
+  observations:
+    - {name: receiver, node: R, label: "Lower Manado"}
+  nodes:
+    U:  {role: source,   label: "Upper Tondano / lake contribution"}
+    T:  {role: source,   label: "Tikala"}
+    L:  {role: source,   label: "Combined lower laterals", aggregate: true}
+    S0: {role: storage,  label: "Lake Tondano (release memory tau)", storage_multiplier: 1.0}
+    S1: {role: storage,  label: "Hydropower context (no operating rule)", storage_multiplier: 0.0}
+    S2: {role: storage,  label: "Kuwil-Kawangkoan dam (tau / 2)", storage_multiplier: 0.5}
+    J0: {role: junction, label: "Tondano-Tikala junction"}
+    R:  {role: receiver, label: "Lower Manado receiver"}
+    O:  {role: boundary, label: "Manado Bay boundary"}
+  edges:
+    - {from: U,  to: S0, delay: false}
+    - {from: S0, to: S1, delay: false}
+    - {from: S1, to: S2, delay: false}
+    - {from: S2, to: J0}
+    - {from: T,  to: J0}
+    - {from: J0, to: R}
+    - {from: L,  to: R}
+    - {from: R,  to: O}
+  evidence: []
+  area_km2: null
+
+kuranji:
+  name: Batang Kuranji / Padang
+  figure: "Figure 29"
+  table4: {nodes: 8, edges: 7, sources: 5, storage: 0, logical_distances: [2, 2, 2, 2, 2]}
+  receiver: R
+  observations:
+    - {name: receiver, node: R, label: "Lower Kuranji"}
+  nodes:
+    K: {role: source, label: "Kuranji base"}
+    B: {role: source, label: "Belimbing"}
+    S: {role: source, label: "Sungkai"}
+    J: {role: source, label: "Janiah / Karuah"}
+    M: {role: source, label: "Limau Manih"}
+    Z: {role: zone,   label: "Unresolved middle confluence zone (internal order unresolved)", aggregate: true}
+    R: {role: receiver, label: "Lower Kuranji coastal receiver"}
+    O: {role: boundary, label: "Indian Ocean boundary"}
+  edges:
+    - {from: K, to: Z}
+    - {from: B, to: Z}
+    - {from: S, to: Z}
+    - {from: J, to: Z}
+    - {from: M, to: Z}
+    - {from: Z, to: R}
+    - {from: R, to: O}
+  evidence: []
+  area_km2: {K: 19.86, B: 62.64, S: 6.00, J: 82.26, M: 31.93}   # sums to 202.69 (section 3.17)
+  refinement_zone: Z        # 105 labelled binary refinements are tested on this zone
+
+huong:
+  name: Huong River / Hue
+  figure: "Figure 43"
+  table4: {nodes: 13, edges: 12, sources: 4, storage: 3, logical_distances: [4, 4, 2, 2]}
+  receiver: R
+  observations:
+    - {name: urban,    node: U, label: "Hue / Kim Long urban probe (pre-Sinh)"}
+    - {name: receiver, node: R, label: "Huong lagoon"}
+  nodes:
+    T:  {role: source,   label: "Ta Trach"}
+    H:  {role: source,   label: "Huu Trach"}
+    B:  {role: source,   label: "Bo"}
+    L:  {role: source,   label: "Downstream residual (provisionally at Sinh)", aggregate: true, provisional: true}
+    S0: {role: storage,  label: "Ta Trach reservoir", storage_multiplier: 1.0}
+    S1: {role: storage,  label: "Binh Dien reservoir", storage_multiplier: 1.0}
+    S2: {role: storage,  label: "Huong Dien reservoir", storage_multiplier: 1.0}
+    J0: {role: junction, label: "Tuan merger"}
+    U:  {role: probe,    label: "Hue / Kim Long urban probe"}
+    J1: {role: junction, label: "Sinh merger"}
+    R:  {role: receiver, label: "Lagoon receiver", aggregate: true}
+    O0: {role: boundary, label: "Thuan An (assumed half share)", aggregate: true}
+    O1: {role: boundary, label: "Tu Hien (assumed half share)", aggregate: true}
+  edges:
+    # source->reservoir connectors are zero-delay: this is the only assignment that reproduces
+    # Table 4 logical distances 4,4,2,2. The figure does not draw dashes, so CONFIRM.
+    - {from: T,  to: S0, delay: false}
+    - {from: H,  to: S1, delay: false}
+    - {from: B,  to: S2, delay: false}
+    - {from: S0, to: J0}
+    - {from: S1, to: J0}
+    - {from: J0, to: U}
+    - {from: U,  to: J1}
+    - {from: S2, to: J1}
+    - {from: L,  to: J1}
+    - {from: J1, to: R}
+    - {from: R,  to: O0, frac: 0.5}
+    - {from: R,  to: O1, frac: 0.5}
+  evidence: []
+  area_km2: {T: 729, H: 718, B: 938, L: 445}        # archived source order (section 3.17)
+  alternatives:
+    bo_before_hue:  {move_edge: {from: S2, to: J1, new_to: J0}}     # Bo storage outflow enters Tuan
+    residual_at_hue: {move_edge: {from: L,  to: J1, new_to: U}}      # provisional residual enters the urban node
+
+kadamaian:
+  name: Kadamaian-Panataran / Kota Belud
+  figure: "Figure 58"
+  table4: {nodes: 6, edges: 5, sources: 3, storage: 0, logical_distances: [2, 2, 1]}
+  receiver: R
+  observations:
+    - {name: receiver, node: R, label: "Kadamaian lower receiver"}
+  nodes:
+    K:  {role: source, label: "Upper Kadamaian"}
+    P:  {role: source, label: "Panataran"}
+    L:  {role: source, label: "Lower / intermediate residual (arithmetic remainder, not a verified polygon)", aggregate: true}
+    J0: {role: junction, label: "Kadamaian-Panataran merger"}
+    R:  {role: receiver, label: "Tamu Darat and lower receiving aggregate", aggregate: true}
+    O:  {role: boundary, label: "Coastal receiving boundary aggregate", aggregate: true}
+  edges:
+    - {from: K,  to: J0}
+    - {from: P,  to: J0}
+    - {from: J0, to: R}
+    - {from: L,  to: R}
+    - {from: R,  to: O}
+  evidence: []
+  area_km2: {K: 155.18, P: 95.90, L: 108.28}        # 359.36 - 251.08 = 108.28 (residual)
+
+hat_yai:
+  name: U-Tapao / Khlong Wat / Hat Yai
+  figure: "Figure 72"
+  table4: {nodes: 11, edges: 11, sources: 6, storage: 0, logical_distances: [3, 3, 3, 3, 3, 3]}
+  receiver: R
+  observations:
+    - {name: urban,    node: Urb, label: "Hat Yai urban entry zone"}
+    - {name: receiver, node: R,   label: "Songkhla receiving lake"}
+  nodes:
+    U:   {role: source, label: "Upper U-Tapao / Sadao"}
+    W:   {role: source, label: "Khlong Wat"}
+    A:   {role: source, label: "Khlong Wa"}
+    T:   {role: source, label: "Khlong Tam"}
+    H:   {role: source, label: "Khao Kho Hong"}
+    L:   {role: source, label: "Direct urban input"}
+    Urb: {role: zone,   label: "Hat Yai entry zone (not one physical junction)", aggregate: true}
+    D0:  {role: junction, label: "U-Tapao path (assumed half share)"}
+    D1:  {role: junction, label: "Ror.1 path (assumed half share)"}
+    R:   {role: receiver, label: "Songkhla receiver", aggregate: true}
+    O:   {role: boundary, label: "Gulf boundary aggregate", aggregate: true}
+  edges:
+    - {from: U,   to: Urb}
+    - {from: W,   to: Urb}
+    - {from: A,   to: Urb}
+    - {from: T,   to: Urb}
+    - {from: H,   to: Urb}
+    - {from: L,   to: Urb}
+    - {from: Urb, to: D0, frac: 0.5}
+    - {from: Urb, to: D1, frac: 0.5}
+    - {from: D0,  to: R}
+    - {from: D1,  to: R}
+    - {from: R,   to: O}
+  evidence: []
+  area_km2: null          # "No areas are invented for CDO, Manado or Hat Yai."

@@ -1,0 +1,7 @@
+node,role,label,aggregate,provisional,is_delineated_catchment,area_km2_published
+K,source,Upper Kadamaian,False,False,False,155.18
+P,source,Panataran,False,False,False,95.9
+L,source,"Lower / intermediate residual (arithmetic remainder, not a verified polygon)",True,False,False,108.28
+J0,junction,Kadamaian-Panataran merger,False,False,False,
+R,receiver,Tamu Darat and lower receiving aggregate,True,False,False,
+O,boundary,Coastal receiving boundary aggregate,True,False,False,
