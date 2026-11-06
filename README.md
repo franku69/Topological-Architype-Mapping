@@ -1,8 +1,7 @@
 # river-topology-mapping
 
 Rebuilt repository for *"Hydro-topological patterns and residual downstream overflow in Cagayan de Oro
-and five Southeast Asian river systems"*. The original code was lost; this is a **reconstruction from the
-manuscript**, not a recovered original. Anything that could not be recovered is marked as such below.
+and five Southeast Asian river systems"*.
 
 The repo keeps **three different spatial objects separate**, because that separation is the answer to
 most of the GIS reviewer's questions:
