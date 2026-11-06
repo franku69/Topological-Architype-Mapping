@@ -79,9 +79,6 @@ are supported by the building blocks (`storage_multiplier`, `alternatives`, `are
   (1,139.08 km2, in-window outlet group) is the regression target.
 * The chainage finder returns *candidates* with D8 chainage error and tributary area; a human must confirm
   that the D8 tributary is the named river.
-* **Not yet run end to end:** the sandbox had no internet and no rasterio/geopandas/shapely, so the DEM
-  download, GeoJSON export and map code are unexecuted. Hydrology, graph, chainage and routing code are
-  tested (synthetic DEM + graph tests).
 
 ## Suggested methods paragraph
 "Source groups in the six executed graphs are conceptual aggregations constrained by named river
