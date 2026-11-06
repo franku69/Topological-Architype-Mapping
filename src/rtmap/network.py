@@ -10,7 +10,7 @@ from __future__ import annotations
 import numpy as np
 import networkx as nx
 
-from .hydro import upstream_mask
+from .hydro import upstream_mask, M_LAT, M_LON
 
 
 def stream_mask(acc, member, land, thr_cells):
@@ -250,3 +250,103 @@ def anchored_group_points(junctions, anchors, tol_km, upstream_name, grid_cell_k
         up = max(chosen, key=lambda aj: aj[1]["chainage_km"])[1]
         pts.insert(0, (upstream_name, int(up["main_donor"])))
     return pts, rep
+
+
+# ------------------------------------------- named-hydrography anchoring (replaces chainage matching)
+def main_stem_cells(recv, stream, acc, outlet):
+    """Main stem as a list of flat cell indices, outlet first (largest-accumulation donor at each step)."""
+    donors = _donors(recv, stream)
+    cur, cells = int(outlet), [int(outlet)]
+    while True:
+        ds = donors.get(cur)
+        if not ds:
+            break
+        cur = int(max(ds, key=lambda d: acc[d]))
+        cells.append(cur)
+    return cells
+
+
+def _to_m(lon, lat, lat0):
+    return np.asarray(lon) * M_LON * np.cos(np.radians(lat0)), np.asarray(lat) * M_LAT
+
+
+def point_polyline_dist_m(px, py, segments):
+    """Min distance (m) from points (px, py; metric coords) to a set of polylines (list of (N,2) metric arrays)."""
+    px, py = np.asarray(px, float), np.asarray(py, float)
+    best = np.full(px.shape, np.inf)
+    for line in segments:
+        a, b = line[:-1], line[1:]
+        ab = b - a
+        L2 = np.maximum((ab ** 2).sum(1), 1e-12)
+        for k in range(len(a)):
+            t = np.clip(((px - a[k, 0]) * ab[k, 0] + (py - a[k, 1]) * ab[k, 1]) / L2[k], 0.0, 1.0)
+            d = np.hypot(px - (a[k, 0] + t * ab[k, 0]), py - (a[k, 1] + t * ab[k, 1]))
+            best = np.minimum(best, d)
+    return best
+
+
+def named_river_anchor(name, lines_lonlat, recv, stream, acc, dd, grid, shape, outlet, main_cells, buffer_m=150.0):
+    """Locate a named river (e.g. an OSM line) on the D8 network.
+
+    lines_lonlat: list of (N,2) arrays of lon/lat vertices (all ways carrying the river's name).
+    The D8 tributary is the NON-main-stem stream cell(s) lying within `buffer_m` of the line; the most
+    downstream such cell (largest accumulation) is followed down the D8 flow path to where it meets the
+    main stem. That junction - not any official chainage - defines the group. Returns a report dict;
+    keys `trib_cell`, `junction_cell`, `main_stem_index` are present only when the river was found.
+    """
+    R, C = shape
+    lat0 = float(np.mean(grid.lat))
+    segs = [np.column_stack(_to_m(l[:, 0], l[:, 1], lat0)) for l in lines_lonlat if len(l) >= 2]
+    main_set = set(main_cells)
+    idx = np.flatnonzero(stream)
+    idx = idx[[int(i) not in main_set for i in idx]]
+    lon = grid.lon0 + (idx % C + 0.5) * grid.rx
+    lat = grid.lat0 - (idx // C + 0.5) * grid.ry
+    dist = point_polyline_dist_m(*_to_m(lon, lat, lat0), segs)
+    sel = dist <= buffer_m
+    # OSM downstream end = the line endpoint closest to the main stem
+    mx, my = _to_m(*np.array([grid.lonlat(c // C, c % C) for c in main_cells]).T, lat0)
+    ends = np.array([e for s in segs for e in (s[0], s[-1])])
+    d_end = np.hypot(ends[:, None, 0] - mx[None, :], ends[:, None, 1] - my[None, :])
+    e_i, m_i = np.unravel_index(np.argmin(d_end), d_end.shape)
+    rep = {"river": name, "buffer_m": buffer_m, "osm_end_to_main_stem_m": round(float(d_end[e_i, m_i]), 1),
+           "osm_end_nearest_main_stem_chainage_km": round(float(dd[main_cells[m_i]]) / 1000, 2),
+           "n_matched_cells": int(sel.sum())}
+    if not sel.any():
+        rep["status"] = f"NOT FOUND: no non-main-stem D8 stream cell within {buffer_m} m of the line"
+        return rep
+    cand = idx[sel]
+    trib = int(cand[np.argmax(acc[cand])])
+    rep["median_offset_m"] = round(float(np.median(dist[sel])), 1)
+    cur, prev = trib, trib
+    while cur not in main_set:
+        prev, cur = cur, int(recv[cur])
+        if cur < 0:
+            rep["status"] = "NOT FOUND: D8 path of the matched cells never reaches the main stem"
+            return rep
+    cell_km2 = float(grid.area[trib // C]) / 1e6
+    rep.update(status="NAMED - D8 tributary lies on the named hydrography line",
+               trib_cell=prev, junction_cell=cur, main_stem_index=main_cells.index(cur),
+               d8_chainage_km=round(float(dd[cur]) / 1000, 2),
+               tributary_area_km2=round(float(acc[prev]) * cell_km2, 1),
+               d8_junction_vs_osm_end_m=round(float(np.hypot(*(np.array(_to_m(*grid.lonlat(cur // C, cur % C), lat0))
+                                                              - np.array([mx[m_i], my[m_i]])))), 1))
+    return rep
+
+
+def named_group_points(reports, anchors, upstream_name, main_cells):
+    """Build (points, report) like anchored_group_points, from named_river_anchor reports.
+    Each anchor is {name, chainage_km (official, kept only for audit), graph_node?}."""
+    pts, out, found = [], [], []
+    for a, r in zip(anchors, reports):
+        r = {**r, "anchor": a["name"], "graph_node": a.get("graph_node"), "official_chainage_km": a.get("chainage_km")}
+        if "trib_cell" in r:
+            found.append(r)
+            pts.append((a["name"], int(r["trib_cell"])))
+            if a.get("chainage_km") is not None:
+                r["chainage_error_km"] = round(r["d8_chainage_km"] - a["chainage_km"], 2)
+        out.append(r)
+    if found:
+        top = max(found, key=lambda r: r["main_stem_index"])
+        pts.insert(0, (upstream_name, int(main_cells[min(top["main_stem_index"] + 1, len(main_cells) - 1)])))
+    return pts, out

@@ -15,6 +15,21 @@ sys.path.insert(0, str(ROOT / "src"))
 from rtmap import hydro, network, dem as demmod, export, compare, maps, __version__  # noqa: E402
 
 
+def load_named_lines(path, name_field, anchors):
+    """{anchor name: [ (N,2) lon/lat arrays ]} from a vector file, matching each anchor's `river_match` regex
+    (case-insensitive) against `name_field`. Needs geopandas (already in requirements.txt)."""
+    import re
+    import geopandas as gpd
+    gdf = gpd.read_file(path).to_crs(4326)
+    gdf = gdf[gdf.geometry.notna() & gdf.geometry.geom_type.isin(["LineString", "MultiLineString"])].explode(index_parts=False)
+    out = {}
+    for a in anchors:
+        pat = re.compile(a.get("river_match", a["name"]), re.I)
+        sub = gdf[gdf[name_field].fillna("").map(lambda v: bool(pat.search(str(v))))]
+        out[a["name"]] = [np.asarray(g.coords)[:, :2] for g in sub.geometry]
+    return out
+
+
 def process(z, grid, cfg, outlet_lonlat):
     """DEM array -> conditioned hydrology + basin. Returns a dict of arrays/objects."""
     shape = z.shape
@@ -82,13 +97,31 @@ def run(site_key, sites, out_root):
     anchor_report = None
     if cfg.get("source_group_anchors"):
         A = cfg["source_group_anchors"]
-        junc = network.main_stem_junctions(P["recv"], st, P["acc"], P["dd"], outlet)
-        pts, anchor_report = network.anchored_group_points(
-            junc, A["anchors"], A.get("tolerance_km", 3.0), A["upstream_group"], float(np.mean(grid.area)) / 1e6)
-        group_mode = "named confluences located by official chainage (candidates; confirm against hydrography)"
+        lines = load_named_lines(ROOT / A["hydrography"], A.get("name_field", "name"), A["anchors"]) \
+            if A.get("hydrography") and (ROOT / A["hydrography"]).exists() else None
+        if A.get("hydrography") and lines is None:
+            print(f"[{site_key}] WARNING: hydrography file {A['hydrography']} not found - falling back to "
+                  "official-chainage matching, which can pick the wrong stream. Run scripts/fetch_osm_rivers.py.")
+        if lines is not None:
+            mc = network.main_stem_cells(P["recv"], st, P["acc"], outlet)
+            reps = []
+            for a in A["anchors"]:
+                ln = lines.get(a["name"])
+                if not ln:
+                    reps.append({"river": a["name"], "status": f"NOT FOUND: no line matching {a.get('river_match')!r} in hydrography file"})
+                    continue
+                reps.append(network.named_river_anchor(a["name"], ln, P["recv"], st, P["acc"], P["dd"], grid, shape,
+                                                       outlet, mc, A.get("buffer_m", 150.0)))
+            pts, anchor_report = network.named_group_points(reps, A["anchors"], A["upstream_group"], mc)
+            group_mode = "named rivers located on hydrography lines (D8 tributary within buffer of the named line)"
+        else:
+            junc = network.main_stem_junctions(P["recv"], st, P["acc"], P["dd"], outlet)
+            pts, anchor_report = network.anchored_group_points(
+                junc, A["anchors"], A.get("tolerance_km", 3.0), A["upstream_group"], float(np.mean(grid.area)) / 1e6)
+            group_mode = "FALLBACK: confluences located by official chainage (candidates; NOT confirmed against hydrography)"
         for r in anchor_report:
-            print(f"[{site_key}] anchor {r['anchor']}: {r.get('d8_chainage_km')} km (official {r['official_chainage_km']}) "
-                  f"-> {r['status'][:40]}")
+            print(f"[{site_key}] anchor {r.get('anchor', r.get('river'))}: D8 chainage {r.get('d8_chainage_km')} km "
+                  f"(official {r.get('official_chainage_km')}), area {r.get('tributary_area_km2')} km2 -> {r['status'][:45]}")
     elif cfg.get("source_groups"):
         pts = []
         for g in cfg["source_groups"]:

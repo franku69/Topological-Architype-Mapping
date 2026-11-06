@@ -89,5 +89,17 @@ are supported by the building blocks (`storage_multiplier`, `alternatives`, `are
 relationships and official chainage; they are not delineated catchments (Table 4a). The rectangular DEM
 window provides regional terrain context only. For GIS review, the Copernicus GLO-90 DSM was conditioned with
 priority-flood, a basin was delineated from the river-mouth outlet with D8, and candidate catchments were
-placed at the Tumalaong (CH 22.3 km) and Bubunawan (CH 18.5 km) confluences. These layers are screening
+placed at the Tumalaong and Bubunawan confluences by matching D8 streams to named OSM river lines (official chainages reported alongside D8 chainages for audit). These layers are screening
 evidence and do not enter the routing experiment."
+
+
+## Re-running CDO with named-river anchoring
+```
+pip install -r requirements.txt
+python scripts/fetch_osm_rivers.py cdo        # writes data/reference/cdo_named_rivers.geojson (needs internet)
+python scripts/run_site.py cdo                # compare outputs/cdo/metrics.json -> confluence_anchor_report
+PYTHONPATH=src python tests/test_synthetic.py
+```
+`confluence_anchor_report` lists, per river: D8 chainage vs official chainage, tributary area, median offset between
+the D8 channel and the OSM line, and how far the OSM downstream end sits from the D8 main stem. If the hydrography
+file is absent the run falls back to chainage matching and `source_group_mode` says `FALLBACK`.

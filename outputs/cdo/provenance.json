@@ -1,8 +1,8 @@
 {
   "rtmap_version": "1.0.0",
-  "run_utc": "2026-11-05T21:55:32.295013+00:00",
+  "run_utc": "2026-11-06T00:22:04.338941+00:00",
   "python": "3.14.0",
-  "config_hash": "1f76c224c510",
+  "config_hash": "bdaea944b01a",
   "config": {
     "dem": "glo90",
     "sea_level_m": 0.0,
@@ -37,16 +37,21 @@
       "upstream_graph_node": "U",
       "residual_group": "L_lower_laterals",
       "residual_graph_node": "L",
+      "hydrography": "data/reference/cdo_named_rivers.geojson",
+      "name_field": "name",
+      "buffer_m": 150,
       "tolerance_km": 3.0,
       "anchors": [
         {
           "name": "T_tumalaong",
           "graph_node": "T",
+          "river_match": "Tumalaong",
           "chainage_km": 22.3
         },
         {
           "name": "B_bubunawan",
           "graph_node": "B",
+          "river_match": "Bubunawan",
           "chainage_km": 18.5
         }
       ]

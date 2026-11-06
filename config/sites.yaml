@@ -23,17 +23,24 @@ sites:
     outlet: [124.6521, 8.4971]                  # lon, lat of screened CDO mouth in the report
     snap_radius_m: 2500
     expected: {basin_area_km2: 1139.08, tol: 0.10}   # in-window outlet-group area in the report
-    # Named confluences located by JICA (2014b) official chainage (paper Table 15). The graph nodes
-    # U/T/B/L stay conceptual; these polygons are GIS screening support for the reviewer.
+    # Source-group anchors. T and B are located ON NAMED HYDROGRAPHY (OSM lines fetched by
+    # scripts/fetch_osm_rivers.py): the D8 stream cells lying within `buffer_m` of the named line are followed
+    # down to the main stem. `chainage_km` (JICA, paper Table 15) is kept ONLY as an audit value - it no longer
+    # selects the stream (nearest-to-chainage picked the wrong tributaries for both rivers).
+    # If the hydrography file is missing, the run falls back to chainage matching and says so loudly.
+    # The graph nodes U/T/B/L stay conceptual; these polygons are GIS screening support for the reviewer.
     source_group_anchors:
       upstream_group: U_upper_cdo
       upstream_graph_node: U
       residual_group: L_lower_laterals
       residual_graph_node: L
-      tolerance_km: 3.0
+      hydrography: data/reference/cdo_named_rivers.geojson
+      name_field: name
+      buffer_m: 150
+      tolerance_km: 3.0                 # fallback (chainage) mode only
       anchors:
-        - {name: T_tumalaong, graph_node: T, chainage_km: 22.3}   # JICA CH 22.3
-        - {name: B_bubunawan, graph_node: B, chainage_km: 18.5}   # JICA CH 18.5
+        - {name: T_tumalaong, graph_node: T, river_match: "Tumalaong", chainage_km: 22.3}   # JICA CH 22.3
+        - {name: B_bubunawan, graph_node: B, river_match: "Bubunawan", chainage_km: 18.5}   # JICA CH 18.5
     # Alternative: named points by coordinate (overrides nothing; remove anchors above to use):
     # source_groups:
     #   - {name: upper_cdo,  lon: ..., lat: ...}
